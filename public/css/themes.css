@@ -1,0 +1,43 @@
+/* LIGHT THEME (Default) */
+.theme-light, .theme-system {
+    --bg-primary: #F2F2F7;
+    --bg-secondary: #FFFFFF;
+    --bg-hover: rgba(0, 0, 0, 0.05);
+    --text-primary: #000000;
+    --text-secondary: #8E8E93;
+    --accent-color: #007AFF;
+    --border-color: rgba(0, 0, 0, 0.1);
+    --card-bg: #FFFFFF;
+    --glass-bg: rgba(255, 255, 255, 0.8);
+    --input-bg: #E3E3E8;
+}
+
+/* DARK THEME (Incorporating original palette blended with Apple Dark style) */
+.theme-dark {
+    --bg-primary: #1C1C1E; /* macOS Dark Grey */
+    --bg-secondary: #2C2C2E;
+    --bg-hover: rgba(255, 255, 255, 0.05);
+    --text-primary: #FFFFFF;
+    --text-secondary: #AEAEB2;
+    --accent-color: #0A84FF;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --card-bg: #2C2C2E;
+    --glass-bg: rgba(44, 44, 46, 0.8);
+    --input-bg: #3A3A3C;
+}
+
+/* System preference auto-override if in system mode */
+@media (prefers-color-scheme: dark) {
+    .theme-system {
+        --bg-primary: #1C1C1E;
+        --bg-secondary: #2C2C2E;
+        --bg-hover: rgba(255, 255, 255, 0.05);
+        --text-primary: #FFFFFF;
+        --text-secondary: #AEAEB2;
+        --accent-color: #0A84FF;
+        --border-color: rgba(255, 255, 255, 0.1);
+        --card-bg: #2C2C2E;
+        --glass-bg: rgba(44, 44, 46, 0.8);
+        --input-bg: #3A3A3C;
+    }
+}

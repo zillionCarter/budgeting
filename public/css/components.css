@@ -1,0 +1,170 @@
+/* Premium Apple Component Set */
+
+.metric-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: var(--transition-smooth);
+}
+
+.metric-card.featured {
+    background: linear-gradient(135deg, #007AFF 0%, #5856D6 100%);
+    color: white;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 122, 255, 0.3);
+}
+
+.big-metric {
+    font-size: 2.4rem;
+    font-weight: 800;
+    margin: 8px 0;
+    letter-spacing: -1px;
+}
+
+/* Segmented Control (Apple Style) */
+.segmented-control {
+    display: flex;
+    background: var(--input-bg);
+    padding: 3px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.segmented-control button {
+    flex: 1;
+    border: none;
+    background: transparent;
+    padding: 8px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
+
+.segmented-control button.active {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+/* Pill Controls */
+.pill-controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.pill-controls button {
+    border: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-smooth);
+}
+
+.pill-controls button:hover {
+    background: var(--bg-hover);
+}
+
+.pill-controls button.secondary {
+    background: transparent;
+    border-color: transparent;
+    color: var(--text-secondary);
+}
+
+/* Summary Box */
+.summary-box {
+    background: var(--bg-primary);
+    padding: 16px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-around;
+    margin: 20px 0;
+}
+
+.summary-box .metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.summary-box .label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+}
+
+.summary-box .value {
+    font-size: 1.2rem;
+    font-weight: 800;
+}
+
+/* Modern Inputs */
+.modern-input {
+    background: var(--input-bg);
+    border: 1px solid transparent;
+    transition: var(--transition-smooth);
+}
+
+.modern-input:focus {
+    border-color: var(--accent-color);
+    outline: none;
+    background: var(--bg-secondary);
+}
+
+/* Tables Clean */
+.table-container.clean {
+    border: none;
+    background: transparent;
+}
+
+.table-container.clean th {
+    background: transparent;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table-container.clean td {
+    padding: 16px 0;
+}
+
+/* Utility */
+.full-width { width: 100%; }
+.large { padding: 16px; font-size: 1rem; }
+.divider {
+    text-align: center;
+    margin: 24px 0;
+    position: relative;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--text-secondary);
+}
+.divider::before, .divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: var(--border-color);
+}
+.divider::before { left: 0; }
+.divider::after { right: 0; }
+
+.status-indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.date-pill {
+    background: var(--input-bg);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
