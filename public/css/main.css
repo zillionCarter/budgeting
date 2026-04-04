@@ -236,100 +236,105 @@ input:focus {
     }
 
     #main-content { 
-        padding: 15px; 
-        padding-top: 25px;
-        padding-bottom: 110px; 
+        padding: 20px; 
+        padding-top: 30px;
+        padding-bottom: 120px; 
     }
 
-    /* High-Density Grid for All Pages */
-    .grid-3, .grid-2 { 
-        grid-template-columns: 1fr 1fr; /* 2 columns everywhere for density */
-        gap: 10px;
+    /* High-Density Grid for Dashboard ONLY */
+    .grid-3 { 
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
     }
     
-    /* Exceptions for prominence */
     .grid-3 .card:last-child {
         grid-column: span 2;
     }
 
-    #page-header h1 { 
-        font-size: 1.5rem; 
-        margin-bottom: 15px;
-        text-align: left;
-        padding-left: 5px;
+    /* All other pages go back to readable 1-column on mobile */
+    .grid-2 { 
+        grid-template-columns: 1fr; 
+        gap: 20px;
     }
 
-    /* Ultra-Compact Mobile Cards */
+    #page-header h1 { 
+        font-size: 2rem; 
+        margin-bottom: 25px;
+        text-align: left;
+    }
+
+    /* Balanced Mobile Cards */
     .card {
-        padding: 12px;
-        border-radius: 15px;
+        padding: 20px;
+        border-radius: 20px;
     }
 
     .secondary-text {
-        font-size: 0.6rem;
-        margin-bottom: 2px;
+        font-size: 0.7rem;
+        margin-bottom: 4px;
     }
 
-    .big-metric {
-        font-size: 1.3rem;
-        margin: 3px 0;
+    /* Small metrics for grid-3, larger for grid-2 */
+    .grid-3 .big-metric {
+        font-size: 1.6rem;
+        margin: 5px 0;
+    }
+
+    .grid-2 .big-metric {
+        font-size: 2.2rem;
     }
 
     .metric-card.featured {
-        padding: 15px 12px;
+        padding: 25px 20px;
     }
     
     .metric-card.featured .big-metric {
-        font-size: 1.8rem;
+        font-size: 2.4rem;
     }
 
-    /* Dense Form Elements */
+    /* Standard Form Elements for readability */
     input, select, .modern-input {
-        padding: 10px;
-        font-size: 0.8rem;
-        border-radius: 8px;
+        padding: 14px;
+        font-size: 1rem;
+        border-radius: 12px;
     }
 
     .btn-primary {
-        padding: 12px;
-        font-size: 0.8rem;
-        border-radius: 10px;
+        padding: 16px;
+        font-size: 1rem;
+        border-radius: 40px;
     }
 
-    /* Compact Goal Items */
+    /* Restore Goal Items visibility */
     .clickable-goal {
-        padding: 10px !important;
-        margin-bottom: 8px !important;
+        padding: 20px !important;
+        margin-bottom: 15px !important;
     }
 
     .clickable-goal strong {
-        font-size: 0.8rem;
+        font-size: 1rem;
     }
 
     .clickable-goal span {
-        font-size: 0.75rem;
+        font-size: 0.9rem;
     }
 
     .clickable-goal p {
-        display: none !important; /* Hide bios in list to save space */
+        display: -webkit-box !important; /* Show bios again */
+        font-size: 0.7rem;
+        opacity: 0.6;
+        margin-top: 10px;
     }
 
-    /* Compact Lists & Tables */
+    /* Standard Lists & Tables */
     .card-title {
-        font-size: 0.75rem;
-        margin-bottom: 10px;
-        letter-spacing: 0.5px;
+        font-size: 1rem;
+        margin-bottom: 20px;
     }
 
     table td, .transaction-table td { 
-        padding: 8px 4px;
-        font-size: 0.75rem;
-    }
-
-    /* Divider adjustment */
-    .divider {
-        margin: 15px 0 !important;
-        font-size: 0.6rem;
+        padding: 12px 6px;
+        font-size: 0.9rem;
     }
 
     /* Better touch targets for buttons */
