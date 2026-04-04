@@ -199,6 +199,7 @@ const Pages = {
         const goals = g.filter(x => x.type === 'goal');
         const wants = g.filter(x => x.type === 'want');
         return `
+            <div class="mobile-scroll-hint"><span>SWIPE FOR WANTS</span> <div class="dots"><span></span><span></span></div></div>
             <div class="grid-2">
                 <div class="card">
                     <div style="display:flex; justify-content:space-between; align-items:center;">
