@@ -253,6 +253,21 @@ input:focus {
         gap: 10px;
     }
 
+    /* Allow horizontal scrolling specifically for Shifts and Expenses */
+    .page-shifts .grid-2, .page-expenses .grid-2 {
+        display: flex;
+        overflow-x: auto;
+        scroll-snap-type: x mandatory;
+        padding-bottom: 10px;
+        gap: 15px;
+    }
+
+    .page-shifts .grid-2 .card, .page-expenses .grid-2 .card {
+        min-width: 85vw; /* Each card takes up most of the screen width */
+        scroll-snap-align: start;
+        flex-shrink: 0;
+    }
+
     #page-header h1 { 
         font-size: 1.6rem; 
         margin-bottom: 15px;

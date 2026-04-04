@@ -49,6 +49,7 @@ const App = {
             el.classList.toggle('active', el.dataset.page === page);
         });
         
+        container.className = `page-${page}`;
         container.innerHTML = `<div class="view-animate" style="padding:40px; opacity:0.5; font-weight:800;">HUB SYNCHRONIZING: ${page.toUpperCase()}</div>`;
         document.getElementById('view-title').innerText = page.toUpperCase();
         
