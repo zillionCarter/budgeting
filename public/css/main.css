@@ -359,6 +359,34 @@ input:focus {
     }
     
     input[type="number"] { inputmode: decimal; }
+
+    /* Scroll Hint UI */
+    .mobile-scroll-hint {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 12px;
+        font-size: 0.65rem;
+        font-weight: 800;
+        color: var(--accent);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+    }
+
+    .mobile-scroll-hint .dots { display: flex; gap: 4px; }
+    .mobile-scroll-hint .dots span {
+        width: 5px; height: 5px;
+        background: var(--accent);
+        border-radius: 50%;
+        animation: hint-pulse 1.5s infinite;
+    }
+    .mobile-scroll-hint .dots span:nth-child(2) { animation-delay: 0.3s; }
+
+    @keyframes hint-pulse {
+        0%, 100% { opacity: 0.3; transform: scale(0.8); }
+        50% { opacity: 1; transform: scale(1.2); }
+    }
 }
 
 /* Glass Table Responsive */

@@ -116,6 +116,7 @@ const Pages = {
     shifts: async () => {
         const s = await fetch('/api/shifts').then(r => r.json());
         return `
+            <div class="mobile-scroll-hint"><span>SWIPE FOR HISTORY</span> <div class="dots"><span></span><span></span></div></div>
             <div class="grid-2">
                 <div class="card">
                     <h3 class="card-title">SHIFT AUTHORIZATION</h3>
@@ -163,6 +164,7 @@ const Pages = {
     expenses: async () => {
         const e = await fetch('/api/expenses').then(r => r.json());
         return `
+            <div class="mobile-scroll-hint"><span>SWIPE FOR HISTORY</span> <div class="dots"><span></span><span></span></div></div>
             <div class="grid-2">
                 <div class="card">
                     <h3 class="card-title">DEBIT AUTHORIZATION</h3>
