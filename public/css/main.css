@@ -226,121 +226,93 @@ input:focus {
         bottom: 0;
         left: 0;
         right: 0;
-        height: 85px;
-        padding-bottom: 20px; /* Safe area for modern phones */
-        border-radius: 30px 30px 0 0;
-        background: rgba(20, 20, 22, 0.95);
+        height: 80px;
+        padding-bottom: 15px;
+        border-radius: 25px 25px 0 0;
+        background: rgba(20, 20, 22, 0.98);
         border: none;
         border-top: 1px solid var(--border);
-        box-shadow: 0 -10px 40px rgba(0,0,0,0.4);
     }
 
     #main-content { 
-        padding: 20px; 
-        padding-top: 40px;
-        padding-bottom: 120px; 
-        padding: 15px; 
+        padding: 12px; 
         padding-top: 25px;
-        padding-bottom: 110px; 
+        padding-bottom: 100px; 
     }
 
-    .grid-3, .grid-2 { 
-    /* High-Density Grid for Dashboard */
+    /* MATCH DESKTOP GRID STRUCTURES */
     .grid-3 { 
-        grid-template-columns: 1fr 1fr; /* 2 columns on mobile for density */
-        gap: 12px;
-    }
-    
-    /* Make the Net Total span both columns for prominence */
-    .grid-3 .card:last-child {
-        grid-column: span 2;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
     }
 
     .grid-2 { 
-        grid-template-columns: 1fr; 
-        gap: 15px;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
     }
 
     #page-header h1 { 
-        font-size: 2.2rem; 
-        margin-bottom: 30px;
-        text-align: center;
-        font-size: 1.8rem; 
-        margin-bottom: 20px;
-        text-align: left;
-        padding-left: 5px;
+        font-size: 1.6rem; 
+        margin-bottom: 15px;
+        letter-spacing: -1px;
     }
 
-    /* Mobile specific card adjustments */
-    /* Compact Mobile Cards */
     .card {
-        padding: 20px;
-        border-radius: 24px;
-        padding: 15px;
-        border-radius: 18px;
+        padding: 12px;
+        border-radius: 15px;
     }
 
     .secondary-text {
-        font-size: 0.65rem;
-        letter-spacing: 0.5px;
-        margin-bottom: 4px;
+        font-size: 0.55rem;
+        margin-bottom: 2px;
     }
 
     .big-metric {
-        font-size: 2.4rem;
-        font-size: 1.5rem; /* Smaller metrics to fit 2-column layout */
-        margin: 5px 0;
+        font-size: 1.1rem;
+        margin: 4px 0;
     }
 
-    .metric-card.featured {
-        padding: 30px 20px;
-        text-align: center;
-        padding: 20px 15px;
-        text-align: left;
-        background: linear-gradient(135deg, var(--accent) 0%, #5856D6 100%);
-    }
-    
     .metric-card.featured .big-metric {
-        font-size: 2.2rem;
+        font-size: 1.4rem;
     }
 
-    /* Compact Ledger */
-    .card-title {
-        font-size: 0.9rem;
-        margin-bottom: 15px;
+    input, select, .modern-input {
+        padding: 10px;
+        font-size: 0.8rem;
+        border-radius: 8px;
     }
 
-    .transaction-table td { 
-        padding: 10px 5px;
-        font-size: 0.85rem;
-    }
-
-    .transaction-table td strong {
+    .btn-primary {
+        padding: 12px;
         font-size: 0.8rem;
     }
 
-    /* Better touch targets for buttons */
-    .btn-primary {
-        padding: 18px;
-        font-size: 1rem;
-        letter-spacing: 1px;
+    .clickable-goal {
+        padding: 12px !important;
+        margin-bottom: 8px !important;
     }
 
-    /* Mobile Modal Fullscreen */
+    .clickable-goal strong { font-size: 0.75rem; }
+    .clickable-goal span { font-size: 0.7rem; }
+    .clickable-goal p {
+        display: -webkit-box !important;
+        font-size: 0.55rem;
+        margin-top: 6px;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+
+    .card-title { font-size: 0.8rem; margin-bottom: 10px; }
+    table td, .transaction-table td { padding: 6px 3px; font-size: 0.65rem; }
+
     .modal-content {
         width: 100%;
         height: 100%;
         max-width: none;
         border-radius: 0;
-        padding: 60px 25px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
-
-    .form-group input, .form-group select, .form-group textarea {
-        font-size: 1.1rem;
-        padding: 18px;
+        padding: 40px 20px;
     }
 
     /* Tab Bar Item Enhancements */
@@ -352,40 +324,26 @@ input:focus {
         flex-direction: column;
         justify-content: center;
         gap: 4px;
-        font-size: 0.65rem;
+        font-size: 0.6rem;
         letter-spacing: 0.5px;
-        transition: var(--transition);
     }
 
-    .tab-item.active {
-        color: var(--accent);
-        transform: translateY(-2px);
-    }
-
+    .tab-item.active { color: var(--accent); }
     .tab-item::before {
         content: '';
         display: block;
-        width: 6px;
-        height: 6px;
+        width: 4px;
+        height: 4px;
         background: transparent;
         border-radius: 50%;
         margin: 0 auto;
-        transition: var(--transition);
     }
-
     .tab-item.active::before {
         background: var(--accent);
-        box-shadow: 0 0 10px var(--accent);
+        box-shadow: 0 0 8px var(--accent);
     }
-
-    /* Transaction list adjustments */
-    .transaction-table th { display: none; }
-    .transaction-table td { padding: 15px 5px; }
-
-    /* Make numeric inputs show numeric keyboard on mobile */
-    input[type="number"] {
-        inputmode: decimal;
-    }
+    
+    input[type="number"] { inputmode: decimal; }
 }
 
 /* Glass Table Responsive */
