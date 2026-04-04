@@ -47,11 +47,15 @@
         <div class="modal-content card view-animate">
             <h3 id="modal-title">AUTHORIZE TARGET</h3>
             <div class="form-group" style="display:grid; gap:20px; margin-top:20px;">
+                <input type="hidden" id="modal-goal-id">
                 <input type="text" id="modal-goal-name" placeholder="TARGET NAME">
+                <textarea id="modal-goal-bio" placeholder="STRATEGIC BIO / REASONING" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:white; padding:12px; border-radius:8px; font-family:inherit; min-height:80px;"></textarea>
                 <input type="number" id="modal-goal-amt" placeholder="TARGET AMOUNT ($)">
                 <input type="date" id="modal-goal-deadline">
+                <div id="modal-recommendation" style="font-size:0.8rem; color:var(--accent); font-weight:800; display:none;"></div>
                 <div style="display:flex; gap:10px;">
                     <button class="btn-primary" id="modal-save-btn" style="flex:2">AUTHORIZE</button>
+                    <button class="btn-primary" id="modal-delete-btn" style="flex:1; background:var(--red); display:none;">DELETE</button>
                     <button class="btn-primary" id="modal-cancel-btn" style="flex:1; background:rgba(255,255,255,0.1)">CANCEL</button>
                 </div>
             </div>

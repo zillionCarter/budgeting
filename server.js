@@ -49,8 +49,8 @@ async function getStats() {
 app.get('/api/dashboard', async (req, res) => {
     try {
         const stats = await getStats();
-        const incomeRes = await db.query(`SELECT date, type as name, total_pay_actual as amount, 'income' as flow FROM shifts WHERE status = 'paid' ORDER BY date DESC LIMIT 10`);
-        const expRes = await db.query(`SELECT date, name, amount, 'expense' as flow FROM expenses ORDER BY date DESC LIMIT 10`);
+        const incomeRes = await db.query(`SELECT id, date, type as name, total_pay_actual as amount, 'income' as flow, 'shift' as source FROM shifts WHERE status = 'paid' ORDER BY date DESC LIMIT 10`);
+        const expRes = await db.query(`SELECT id, date, name, amount, 'expense' as flow, 'expense' as source FROM expenses ORDER BY date DESC LIMIT 10`);
         
         const history = [...incomeRes.rows, ...expRes.rows]
             .sort((a,b) => new Date(b.date) - new Date(a.date))
@@ -75,6 +75,11 @@ app.post('/api/shifts', async (req, res) => {
     const pay = ((parseFloat(hours) || 0) + (parseFloat(minutes) || 0) / 60) * RATES[type];
     await db.query(`INSERT INTO shifts (date, type, hours, minutes, total_pay_estimated, status, notes) VALUES ($1, $2, $3, $4, $5, 'pending', $6)`, 
         [date, type, hours, minutes, pay, notes || '']);
+    res.json({ success: true });
+});
+
+app.delete('/api/shifts/:id', async (req, res) => {
+    await db.query('DELETE FROM shifts WHERE id = $1', [req.params.id]);
     res.json({ success: true });
 });
 
@@ -109,14 +114,32 @@ app.post('/api/expenses', async (req, res) => {
     res.json({ success: true });
 });
 
+app.delete('/api/expenses/:id', async (req, res) => {
+    await db.query('DELETE FROM expenses WHERE id = $1', [req.params.id]);
+    res.json({ success: true });
+});
+
 app.get('/api/goals', async (req, res) => {
     const { rows } = await db.query('SELECT * FROM goals ORDER BY priority_score DESC');
     res.json(rows);
 });
 
 app.post('/api/goals', async (req, res) => {
-    await db.query(`INSERT INTO goals (type, name, target_amount, deadline) VALUES ($1, $2, $3, $4)`, 
-        [req.body.type, req.body.name, req.body.target_amount, req.body.deadline || '']);
+    const { type, name, bio, target_amount, deadline } = req.body;
+    await db.query(`INSERT INTO goals (type, name, bio, target_amount, deadline) VALUES ($1, $2, $3, $4, $5)`, 
+        [type, name, bio || '', target_amount, deadline || '']);
+    res.json({ success: true });
+});
+
+app.patch('/api/goals/:id', async (req, res) => {
+    const { name, bio, target_amount, deadline } = req.body;
+    await db.query(`UPDATE goals SET name = $1, bio = $2, target_amount = $3, deadline = $4 WHERE id = $5`, 
+        [name, bio, target_amount, deadline, req.params.id]);
+    res.json({ success: true });
+});
+
+app.delete('/api/goals/:id', async (req, res) => {
+    await db.query('DELETE FROM goals WHERE id = $1', [req.params.id]);
     res.json({ success: true });
 });
 

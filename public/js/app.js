@@ -14,18 +14,31 @@ const App = {
         const modal = document.getElementById('goal-modal');
         document.getElementById('modal-cancel-btn').onclick = () => modal.classList.add('hidden');
         document.getElementById('modal-save-btn').onclick = async () => {
+            const id = document.getElementById('modal-goal-id').value;
             const name = document.getElementById('modal-goal-name').value;
+            const bio = document.getElementById('modal-goal-bio').value;
             const amt = document.getElementById('modal-goal-amt').value;
             const deadline = document.getElementById('modal-goal-deadline').value;
             if (!name || !amt) return alert("REQUIRED FIELDS MISSING");
 
-            await fetch('/api/goals', {
-                method: 'POST',
+            const method = id ? 'PATCH' : 'POST';
+            const url = id ? `/api/goals/${id}` : '/api/goals';
+
+            await fetch(url, {
+                method: method,
                 headers: {'Content-Type':'application/json'},
-                body: JSON.stringify({ type: this.activeType, name, target_amount: parseFloat(amt), deadline })
+                body: JSON.stringify({ type: this.activeType, name, bio, target_amount: parseFloat(amt), deadline })
             });
             modal.classList.add('hidden');
             this.navigate('goals');
+        };
+        document.getElementById('modal-delete-btn').onclick = async () => {
+            const id = document.getElementById('modal-goal-id').value;
+            if (id && confirm('DELETE THIS TARGET?')) {
+                await fetch(`/api/goals/${id}`, { method: 'DELETE' });
+                modal.classList.add('hidden');
+                this.navigate('goals');
+            }
         };
     },
 
@@ -79,8 +92,8 @@ const Pages = {
             </div>
             <div class="card" style="margin-top:40px;">
                 <h3 class="card-title">MASTER LEDGER (UNIFIED LOG)</h3>
-                <table>
-                    <thead><tr><th>DATE</th><th>DESCRIPTION</th><th style="text-align:right">VALUE</th></tr></thead>
+                <table class="transaction-table">
+                    <thead><tr><th>DATE</th><th>DESCRIPTION</th><th style="text-align:right">VALUE</th><th></th></tr></thead>
                     <tbody>
                         ${d.transactions.map(t => `
                             <tr>
@@ -89,8 +102,11 @@ const Pages = {
                                 <td style="text-align:right; font-weight:900; color:${t.flow==='income'?'var(--green)':'var(--red)'}">
                                     ${t.flow==='income'?'+':'-'}$${t.amount.toFixed(2)}
                                 </td>
+                                <td style="text-align:right">
+                                    <button class="btn-delete" onclick="deleteTransaction(${t.id}, '${t.source}')" style="background:none; border:none; color:var(--red); cursor:pointer; font-size:1.2rem; padding:0 10px;">×</button>
+                                </td>
                             </tr>
-                        `).join('') || '<tr><td colspan="3" style="padding:40px; text-align:center; opacity:0.5;">LEDGER CLEAR</td></tr>'}
+                        `).join('') || '<tr><td colspan="4" style="padding:40px; text-align:center; opacity:0.5;">LEDGER CLEAR</td></tr>'}
                     </tbody>
                 </table>
             </div>
@@ -129,7 +145,12 @@ const Pages = {
                                 <tr>
                                     <td>${x.date}</td>
                                     <td><strong>$${x.total_pay_estimated.toFixed(2)}</strong></td>
-                                    <td style="text-align:right"><button class="btn-primary" onclick="payShift(${x.id})" style="padding:8px 16px; font-size:0.7rem;">SET PAID</button></td>
+                                    <td style="text-align:right">
+                                        <div style="display:flex; gap:5px; justify-content:flex-end;">
+                                            <button class="btn-primary" onclick="payShift(${x.id})" style="padding:8px 16px; font-size:0.7rem;">SET PAID</button>
+                                            <button class="btn-primary" onclick="deleteShift(${x.id})" style="padding:8px 12px; font-size:0.7rem; background:var(--red)">×</button>
+                                        </div>
+                                    </td>
                                 </tr>
                             `).join('') || '<tr><td colspan="3" style="padding:40px; text-align:center; opacity:0.5">QUEUE CLEAR</td></tr>'}
                         </tbody>
@@ -171,6 +192,7 @@ const Pages = {
     },
     goals: async () => {
         const g = await fetch('/api/goals').then(r => r.json());
+        App.currentGoals = g;
         const goals = g.filter(x => x.type === 'goal');
         const wants = g.filter(x => x.type === 'want');
         return `
@@ -181,9 +203,10 @@ const Pages = {
                         <button class="ai-button" onclick="aiSort('goal')">AI SORT</button>
                     </div>
                     <div id="goal-list" style="margin-top:20px;">
-                        ${goals.map(x => `<div class="card" style="padding:20px; margin-bottom:10px; background:rgba(255,255,255,0.02)">
+                        ${goals.map(x => `<div class="card clickable-goal" onclick="openEditGoal(${x.id})" style="padding:20px; margin-bottom:10px; background:rgba(255,255,255,0.02); cursor:pointer;">
                             <div style="display:flex; justify-content:space-between;"><strong>${x.name}</strong> <span>$${x.target_amount}</span></div>
                             <div style="font-size:0.7rem; color:var(--accent); margin-top:5px; font-weight:800">${x.priority_label || 'AWAITING ANALYTICS'}</div>
+                            ${x.bio ? `<p style="font-size:0.6rem; opacity:0.6; margin-top:10px; line-clamp:2; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${x.bio}</p>` : ''}
                         </div>`).join('') || '<div style="padding:40px; text-align:center; opacity:0.5">NO TARGETS</div>'}
                     </div>
                     <button class="btn-primary" style="width:100%; margin-top:20px" onclick="openTargetModal('goal')">+ NEW TARGET</button>
@@ -194,9 +217,10 @@ const Pages = {
                         <button class="ai-button" onclick="aiSort('want')">AI SORT</button>
                     </div>
                     <div id="want-list" style="margin-top:20px;">
-                        ${wants.map(x => `<div class="card" style="padding:20px; margin-bottom:10px; background:rgba(255,255,255,0.02)">
+                        ${wants.map(x => `<div class="card clickable-goal" onclick="openEditGoal(${x.id})" style="padding:20px; margin-bottom:10px; background:rgba(255,255,255,0.02); cursor:pointer;">
                             <div style="display:flex; justify-content:space-between;"><strong>${x.name}</strong> <span>$${x.target_amount}</span></div>
                             <div style="font-size:0.7rem; color:#5856D6; margin-top:5px; font-weight:800">${x.priority_label || 'AWAITING ANALYTICS'}</div>
+                            ${x.bio ? `<p style="font-size:0.6rem; opacity:0.6; margin-top:10px; line-clamp:2; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${x.bio}</p>` : ''}
                         </div>`).join('') || '<div style="padding:40px; text-align:center; opacity:0.5">NO WANTS</div>'}
                     </div>
                     <button class="btn-primary" style="width:100%; margin-top:20px" onclick="openTargetModal('want')">+ NEW WANT</button>
@@ -230,6 +254,15 @@ const PageLogic = {
 };
 
 window.payShift = async (id) => { await fetch(`/api/shifts/pay/${id}`, {method:'POST'}); App.navigate('dashboard'); };
+window.deleteShift = async (id) => { if(confirm('DELETE SHIFT?')) { await fetch(`/api/shifts/${id}`, {method:'DELETE'}); App.navigate('shifts'); } };
+window.deleteTransaction = async (id, source) => {
+    if(confirm('REMOVE FROM LEDGER?')) {
+        const url = source === 'shift' ? `/api/shifts/${id}` : `/api/expenses/${id}`;
+        await fetch(url, {method:'DELETE'});
+        App.navigate('dashboard');
+    }
+};
+
 window.aiSort = async (type) => { 
     document.getElementById(type === 'goal' ? 'goal-list' : 'want-list').style.opacity = '0.3';
     await fetch('/api/goals/sort', { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({type})});
@@ -237,7 +270,45 @@ window.aiSort = async (type) => {
 };
 window.openTargetModal = (type) => {
     App.activeType = type;
+    document.getElementById('modal-goal-id').value = '';
+    document.getElementById('modal-goal-name').value = '';
+    document.getElementById('modal-goal-bio').value = '';
+    document.getElementById('modal-goal-amt').value = '';
+    document.getElementById('modal-goal-deadline').value = '';
     document.getElementById('modal-title').innerText = `AUTHORIZE ${type.toUpperCase()}`;
+    document.getElementById('modal-delete-btn').style.display = 'none';
+    document.getElementById('modal-recommendation').style.display = 'none';
+    document.getElementById('goal-modal').classList.remove('hidden');
+};
+
+window.openEditGoal = (id) => {
+    const goal = App.currentGoals.find(g => g.id === id);
+    if (!goal) return;
+    App.activeType = goal.type;
+    document.getElementById('modal-goal-id').value = goal.id;
+    document.getElementById('modal-goal-name').value = goal.name;
+    document.getElementById('modal-goal-bio').value = goal.bio || '';
+    document.getElementById('modal-goal-amt').value = goal.target_amount;
+    document.getElementById('modal-goal-deadline').value = goal.deadline || '';
+    document.getElementById('modal-title').innerText = `EDIT ${goal.type.toUpperCase()}`;
+    document.getElementById('modal-delete-btn').style.display = 'block';
+    
+    // Calculate recommendation
+    const recEl = document.getElementById('modal-recommendation');
+    if (goal.deadline && goal.target_amount) {
+        const days = (new Date(goal.deadline) - new Date()) / (86400000);
+        const fortnights = days / 14;
+        if (fortnights > 0) {
+            const perFortnight = goal.target_amount / fortnights;
+            recEl.innerText = `RECOMMENDED: $${perFortnight.toFixed(2)} / FORTNIGHT`;
+            recEl.style.display = 'block';
+        } else {
+            recEl.style.display = 'none';
+        }
+    } else {
+        recEl.style.display = 'none';
+    }
+
     document.getElementById('goal-modal').classList.remove('hidden');
 };
 
